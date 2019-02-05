@@ -43,11 +43,14 @@ async def worker():
             break
 
         print('COMMAND', cmd, params)
-        if cmd == 'rm':
+        if cmd == 'rm' and params[0] in clients:
             del clients[params[0]]
 
         for client in clients.values():
-            await client.ws.send(json.dumps((cmd, *params)))
+            try:
+                await client.ws.send(json.dumps((cmd, *params)))
+            except websockets.ConnectionClosed:
+                await queue.put('rm', client._id)
 
 
 async def chat(websocket, path):
