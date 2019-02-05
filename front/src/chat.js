@@ -10,7 +10,7 @@ let DATA = {
     messages: [],
 };
 
-const REACT_APP_WS_DOMAIN = process.env.REACT_APP_WS_DOMAIN || 'ws.onetimechat.online';
+const REACT_APP_WS_DOMAIN = process.env.REACT_APP_WS_DOMAIN || 'wss://ws.onetimechat.online';
 
 const Message = ({message}) => {
     let strColor = '#' + message.client_id.substr(0, 6);
@@ -104,8 +104,7 @@ class Chat extends Component {
     constructor(props) {
         super(props);
 
-        let uri = 'ws://' + REACT_APP_WS_DOMAIN;
-        this.startSocket(uri);
+        this.startSocket(REACT_APP_WS_DOMAIN);
 
         this.state = {
             lastMessageId: 0,
