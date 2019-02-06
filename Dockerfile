@@ -1,5 +1,7 @@
 FROM python:3.7-alpine
 
+RUN apk add --no-cache gcc musl-dev
+
 RUN pip install pipenv
 
 RUN mkdir -p /app
