@@ -37,6 +37,13 @@ queue = CommandQueue()
 clients = dict()
 
 
+async def send_data(client, data):
+    try:
+        await client.ws.send(data)
+    except websockets.ConnectionClosed:
+        await queue.put('rm', client.id)
+
+
 async def worker():
     logger.debug('worker started')
     while True:
@@ -49,10 +56,7 @@ async def worker():
             del clients[params[0]]
 
         for client in clients.values():
-            try:
-                await client.ws.send(json.dumps((cmd, *params)))
-            except websockets.ConnectionClosed:
-                await queue.put('rm', client._id)
+            asyncio.create_task(send_data(client, json.dumps((cmd, *params))))
 
 
 async def chat(websocket, path):
