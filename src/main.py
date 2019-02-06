@@ -1,6 +1,6 @@
 import asyncio
 from dataclasses import dataclass
-import json
+import ujson as json
 import logging
 import os
 import signal
@@ -20,7 +20,9 @@ logger.addHandler(logging.StreamHandler())
 
 @dataclass
 class Client:
-    _id: str
+    __slots__ = 'id', 'name', 'ws'
+
+    id: str
     name: str
     ws: websockets.WebSocketServerProtocol
 
