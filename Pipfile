@@ -12,6 +12,7 @@ aiojobs = "*"
 websockets = "*"
 names = "*"
 ujson = "*"
+uvloop = "*"
 
 [requires]
 python_version = "3.7"

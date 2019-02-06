@@ -1,6 +1,6 @@
 FROM python:3.7-alpine
 
-RUN apk add --no-cache gcc musl-dev
+RUN apk add --no-cache gcc musl-dev make
 
 RUN pip install pipenv
 

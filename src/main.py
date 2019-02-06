@@ -9,12 +9,20 @@ import uuid
 
 import aiojobs
 import names
+import uvloop
 import websockets
+
+uvloop.install()
 
 DEBUG = bool(int(os.getenv('DEBUG', 0)))
 
 logger = logging.getLogger('websockets')
-logger.setLevel(logging.INFO)
+log_level = logging.INFO
+
+if DEBUG:
+    log_level = logging.DEBUG
+
+logger.setLevel(log_level)
 logger.addHandler(logging.StreamHandler())
 
 
@@ -35,13 +43,16 @@ class CommandQueue(asyncio.Queue):
 
 queue = CommandQueue()
 clients = dict()
+to_remove = set()
 
 
 async def send_data(client, data):
     try:
         await client.ws.send(data)
     except websockets.ConnectionClosed:
-        await queue.put('rm', client.id)
+        if client.id not in to_remove:
+            to_remove.add(client.id)
+            await queue.put('rm', client.id)
 
 
 async def worker():
@@ -54,6 +65,7 @@ async def worker():
         print('COMMAND', cmd, params)
         if cmd == 'rm' and params[0] in clients:
             del clients[params[0]]
+            to_remove.discard(params[0])
 
         for client in clients.values():
             asyncio.create_task(send_data(client, json.dumps((cmd, *params))))
@@ -88,7 +100,9 @@ async def chat(websocket, path):
         pass
 
     print('ws connection closed')
-    await queue.put('rm', client_id)
+    if client_id not in to_remove:
+        to_remove.add(client_id)
+        await queue.put('rm', client_id)
 
 
 async def server(stop, host='0.0.0.0', port=8080):
@@ -107,6 +121,7 @@ loop = asyncio.get_event_loop()
 
 if DEBUG:
     import aiohttp_autoreload
+
     aiohttp_autoreload.start(loop, 1)
 
 stop = asyncio.Future()
