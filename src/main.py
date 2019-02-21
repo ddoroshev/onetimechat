@@ -37,7 +37,6 @@ class Client:
 
 class CommandQueue(asyncio.Queue):
     async def put(self, cmd, *params):
-        print(cmd, params)
         return await super().put((cmd, *params))
 
 
@@ -62,7 +61,6 @@ async def worker():
         if cmd is None:
             break
 
-        print('COMMAND', cmd, params)
         if cmd == 'rm' and params[0] in clients:
             del clients[params[0]]
             to_remove.discard(params[0])
@@ -96,10 +94,9 @@ async def chat(websocket, path):
                     params[4] = int(time.time())
 
             await queue.put(cmd, *params)
-    except websockets.ConnectionClosed:
-        pass
+    except websockets.ConnectionClosed as e:
+        logger.exception('Connection closed: %r' % e, exc_info=e)
 
-    print('ws connection closed')
     if client_id not in to_remove:
         to_remove.add(client_id)
         await queue.put('rm', client_id)
