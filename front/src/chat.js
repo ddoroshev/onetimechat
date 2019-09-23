@@ -12,6 +12,11 @@ let DATA = {
 
 const REACT_APP_WS_DOMAIN = process.env.REACT_APP_WS_DOMAIN || 'wss://ws.onetimechat.online';
 
+const CMD_INIT = 'init';
+const CMD_ADD = 'add';
+const CMD_RM = 'rm';
+const CMD_FETCH = 'fetch';
+
 const Message = ({message}) => {
     let strColor = '#' + message.client_id.substr(0, 6);
 
@@ -127,13 +132,14 @@ class Chat extends Component {
             console.log('message', event);
 
             let [cmd, ...params] = JSON.parse(event.data);
+
             switch (cmd) {
-                case 'init':
+                case CMD_INIT:
                     DATA.id = params[0];
                     DATA.name = params[1];
                     break;
 
-                case 'add':
+                case CMD_ADD:
                     let send = true;
                     console.log('fetching', params[3]);
 
@@ -154,11 +160,11 @@ class Chat extends Component {
                     }
                     break;
 
-                case 'rm':
+                case CMD_RM:
                     DATA.messages = DATA.messages.filter(msg => msg.client_id !== params[0]);
                     break;
 
-                case 'fetch':
+                case CMD_FETCH:
                     for (let i in DATA.messages) {
                         let message = DATA.messages[i];
                         console.log(message.client_id, DATA.id);

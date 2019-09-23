@@ -16,6 +16,12 @@ uvloop.install()
 
 DEBUG = bool(int(os.getenv('DEBUG', 0)))
 
+CMD_INIT = 'init'
+CMD_FETCH = 'fetch'
+CMD_RM = 'rm'
+CMD_SEND = 'send'
+CMD_ADD = 'add'
+
 logger = logging.getLogger('websockets')
 log_level = logging.INFO
 
@@ -51,7 +57,7 @@ async def send_data(client, data):
     except websockets.ConnectionClosed:
         if client.id not in to_remove:
             to_remove.add(client.id)
-            await queue.put('rm', client.id)
+            await queue.put(CMD_RM, client.id)
 
 
 async def worker():
@@ -61,7 +67,7 @@ async def worker():
         if cmd is None:
             break
 
-        if cmd == 'rm' and params[0] in clients:
+        if cmd == CMD_RM and params[0] in clients:
             del clients[params[0]]
             to_remove.discard(params[0])
 
@@ -76,8 +82,8 @@ def load_message(message):
         cmd = message
         params = []
 
-    if cmd == 'send':
-        cmd = 'add'
+    if cmd == CMD_SEND:
+        cmd = CMD_ADD
         if params[3] is None:
             params[3] = uuid.uuid4().hex
             params[4] = int(time.time())
@@ -92,8 +98,8 @@ async def chat(websocket, path):
     client = Client(client_id, name, websocket)
     clients[client_id] = client
 
-    await websocket.send(json.dumps(('init', client_id, name)))
-    await queue.put('fetch')
+    await websocket.send(json.dumps((CMD_INIT, client_id, name)))
+    await queue.put(CMD_FETCH)
 
     try:
         async for message in websocket:
@@ -105,7 +111,7 @@ async def chat(websocket, path):
 
     if client_id not in to_remove:
         to_remove.add(client_id)
-        await queue.put('rm', client_id)
+        await queue.put(CMD_RM, client_id)
 
 
 async def server(stop, host='0.0.0.0', port=8080):
