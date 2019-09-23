@@ -1,6 +1,5 @@
 import asyncio
 from dataclasses import dataclass
-import ujson as json
 import logging
 import os
 import signal
@@ -9,6 +8,7 @@ import uuid
 
 import aiojobs
 import names
+import ujson as json
 import uvloop
 import websockets
 
@@ -41,7 +41,7 @@ class CommandQueue(asyncio.Queue):
 
 
 queue = CommandQueue()
-clients = dict()
+clients = {}
 to_remove = set()
 
 
@@ -69,6 +69,22 @@ async def worker():
             asyncio.create_task(send_data(client, json.dumps((cmd, *params))))
 
 
+def load_message(message):
+    try:
+        cmd, *params = json.loads(message)
+    except ValueError:
+        cmd = message
+        params = []
+
+    if cmd == 'send':
+        cmd = 'add'
+        if params[3] is None:
+            params[3] = uuid.uuid4().hex
+            params[4] = int(time.time())
+
+    return cmd, params
+
+
 async def chat(websocket, path):
     client_id = uuid.uuid4().hex
     name = names.get_full_name()
@@ -81,19 +97,9 @@ async def chat(websocket, path):
 
     try:
         async for message in websocket:
-            try:
-                cmd, *params = json.loads(message)
-            except ValueError:
-                cmd = message
-                params = []
-
-            if cmd == 'send':
-                cmd = 'add'
-                if params[3] is None:
-                    params[3] = uuid.uuid4().hex
-                    params[4] = int(time.time())
-
+            cmd, params = load_message(message)
             await queue.put(cmd, *params)
+
     except websockets.ConnectionClosed as e:
         logger.exception('Connection closed: %r' % e, exc_info=e)
 
