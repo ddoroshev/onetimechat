@@ -1,15 +1,18 @@
-### Структура сообщения:
+# One Time Chat
 
-`[<команда>, [параметры команды]]`
+Source code for https://onetimechat.online
 
+## Message structure:
 
-### Команды от клиента к серверу:
+`[<command>, [param1, param2, ...]]`
 
-- `[send, <id>, {...}]` - отправка нового сообщения
+## Client-to-server commands:
 
-### Команды от сервера к клиентам:
+- `[send, <id>, {...}]` - send new message
 
-- `[init, <id>]` - первичная инициализация с новым `id`
-- `[add, <id>, <message>]` - добавление нового сообщения от id=`<id>`
-- `[rm, <id>]` - удаление всех сообщений чувака с id=`<id>`
-- `[fetch]` - запрос всех сообщений клиента
+## Server-to-clients commands:
+
+- `[init, <id>]` - initiaize a client with new `id`
+- `[add, <id>, <message>]` - add new message from a client with id=`<id>`
+- `[rm, <id>]` - remove all messages from a client with id=`<id>`
+- `[fetch]` - fetch all messages from client
