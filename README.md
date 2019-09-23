@@ -1,6 +1,6 @@
 # One Time Chat
 
-Source code for https://onetimechat.online
+Source code for https://onetimechat.online, a storageless chat, which stores messages only inside your browser.
 
 ## Message structure:
 
