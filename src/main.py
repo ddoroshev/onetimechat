@@ -34,7 +34,7 @@ logger.addHandler(logging.StreamHandler())
 
 @dataclass
 class Client:
-    __slots__ = 'id', 'name', 'ws'
+    __slots__ = 'id', 'name', 'ws'  # ~9% perfomance gain
 
     id: str
     name: str
@@ -55,6 +55,7 @@ async def send_data(client, data):
     try:
         await client.ws.send(data)
     except websockets.ConnectionClosed:
+        # Remove client if connection is closed
         if client.id not in to_remove:
             to_remove.add(client.id)
             await queue.put(CMD_RM, client.id)
@@ -79,10 +80,12 @@ def load_message(message):
     try:
         cmd, *params = json.loads(message)
     except ValueError:
+        # In case of CMD_FETCH
         cmd = message
         params = []
 
     if cmd == CMD_SEND:
+        # Convert CMD_SEND to CMD_ADD command with new UUID and timestamp, if needed
         cmd = CMD_ADD
         if params[3] is None:
             params[3] = uuid.uuid4().hex
