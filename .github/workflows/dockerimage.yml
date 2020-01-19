@@ -16,9 +16,7 @@ jobs:
     - name: Publish Docker
       uses: elgohr/Publish-Docker-Github-Action@2.12
       with:
-        # The name of the image you would like to push
         name: app
-        # The login username for the registry
         username: "{{ DOCKER_REGISTRY_LOGIN }}"
-        # The login password for the registry
-        password: "{{ DOCKER_REGISTRY_LOGIN }}"
+        password: "{{ DOCKER_REGISTRY_PASSWORD }}"
+        registry: docker.pkg.github.com
