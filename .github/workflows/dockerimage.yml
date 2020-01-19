@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag app
+
+    - name: Publish Docker
+      uses: elgohr/Publish-Docker-Github-Action@2.12
+      with:
+        # The name of the image you would like to push
+        name: app
+        # The login username for the registry
+        username: {{ DOCKER_REGISTRY_LOGIN }}
+        # The login password for the registry
+        password: {{ DOCKER_REGISTRY_LOGIN }}
