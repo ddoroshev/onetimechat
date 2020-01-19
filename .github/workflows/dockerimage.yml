@@ -17,3 +17,4 @@ jobs:
         username: "${{ secrets.DOCKER_REGISTRY_LOGIN }}"
         password: "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
         registry: docker.pkg.github.com
+        buildoptions: "--pull"
