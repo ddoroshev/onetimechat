@@ -4,16 +4,32 @@ on: [push]
 
 jobs:
 
-  build:
+  build_app:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build and publish Docker image
+    - name: "Backend: Build and publish Docker image"
       uses: elgohr/Publish-Docker-Github-Action@2.12
       with:
         name: pomidoroshev/onetimechat/app
+        username: "${{ secrets.DOCKER_REGISTRY_LOGIN }}"
+        password: "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
+        registry: docker.pkg.github.com
+        buildoptions: "--pull"
+
+  build_front:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: "Frontend: Build and publish Docker image"
+      uses: elgohr/Publish-Docker-Github-Action@2.12
+      with:
+        name: pomidoroshev/onetimechat/front
+        workdir: front
         username: "${{ secrets.DOCKER_REGISTRY_LOGIN }}"
         password: "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
         registry: docker.pkg.github.com
