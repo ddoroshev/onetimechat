@@ -13,7 +13,7 @@ jobs:
     - name: Build and publish Docker image
       uses: elgohr/Publish-Docker-Github-Action@2.12
       with:
-        name: app
+        name: pomidoroshev/onetimechat/app
         username: "${{ secrets.DOCKER_REGISTRY_LOGIN }}"
         password: "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
         registry: docker.pkg.github.com
