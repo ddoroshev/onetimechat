@@ -10,13 +10,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag app
-
-    - name: Publish Docker
+    - name: Build and publish Docker image
       uses: elgohr/Publish-Docker-Github-Action@2.12
       with:
         name: app
-        username: "{{ DOCKER_REGISTRY_LOGIN }}"
-        password: "{{ DOCKER_REGISTRY_PASSWORD }}"
+        username: "${{ secrets.DOCKER_REGISTRY_LOGIN }}"
+        password: "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
         registry: docker.pkg.github.com
