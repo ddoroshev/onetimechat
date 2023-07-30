@@ -1,21 +1,19 @@
-FROM python:3.7-alpine
+FROM ghcr.io/ddoroshev/pybase:compile-3.11.4 as compile
 
-RUN apk add --no-cache gcc g++ musl-dev make
+COPY poetry.lock pyproject.toml /app/
 
-RUN pip install pipenv
+RUN poetry install --no-root --only main
 
-RUN mkdir -p /app
+COPY . /app/
 
-ADD Pipfile /app
 
-ADD Pipfile.lock /app
+FROM ghcr.io/ddoroshev/pybase:runtime-3.11.4 as runtime
 
 WORKDIR /app
 
-RUN pipenv install --system --deploy
+COPY --from=compile /venv /venv
+COPY --from=compile /app /app
 
-ADD . /app
+EXPOSE 8080
 
-WORKDIR /app/src
-
-CMD ["python", "main.py"]
+CMD ["python", "src/main.py"]

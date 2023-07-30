@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "onetimechat"
+version = "0.1.0"
+description = ""
+authors = ["Dima Doroshev <github@doroshev.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiojobs = "^1.1.0"
+websockets = "^11.0.3"
+names = "^0.3.0"
+ujson = "^5.8.0"
+uvloop = "^0.17.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
