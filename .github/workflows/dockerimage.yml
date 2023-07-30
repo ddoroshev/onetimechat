@@ -3,7 +3,7 @@ name: Docker Image CI
 on: [push]
 
 jobs:
-
+  permissions: write-all
   build_app:
 
     runs-on: ubuntu-latest
