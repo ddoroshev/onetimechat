@@ -9,14 +9,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: "Backend: Build and publish Docker image"
-      uses: elgohr/Publish-Docker-Github-Action@2.12
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
-        name: pomidoroshev/onetimechat/app
-        username: "${{ secrets.DOCKER_REGISTRY_LOGIN }}"
-        password: "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
-        registry: docker.pkg.github.com
+        name: ddoroshev/onetimechat/app
+        username: "${{ github.actor }}"
+        password: "${{ secrets.GITHUB_TOKEN }}"
+        registry: "ghcr.io"
         buildoptions: "--pull"
 
   build_front:
@@ -24,13 +24,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: "Frontend: Build and publish Docker image"
-      uses: elgohr/Publish-Docker-Github-Action@2.12
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
-        name: pomidoroshev/onetimechat/front
+        name: ddoroshev/onetimechat/front
         workdir: front
-        username: "${{ secrets.DOCKER_REGISTRY_LOGIN }}"
-        password: "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
-        registry: docker.pkg.github.com
+        username: "${{ github.actor }}"
+        password: "${{ secrets.GITHUB_TOKEN }}"
+        registry: "ghcr.io"
         buildoptions: "--pull"
