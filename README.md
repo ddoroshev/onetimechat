@@ -1,8 +1,8 @@
-# One Time Chat: An Ephemeral Real-Time Chat Platform
-
 <div align="center">
-    <img src="img/logo.png" width="256px" alt="onetimechat logo"/>
+    <img src="img/logo.png" width="150px" alt="onetimechat logo"/>
 </div>
+
+# One Time Chat: An Ephemeral Real-Time Chat Platform
 
 Welcome to One Time Chat, a unique and privacy-focused chat platform that keeps the conversation right where it should be - between the participants! This application is perfect for those who value real-time interaction and data privacy. Check it out live at https://chat.doroshev.com.
 
