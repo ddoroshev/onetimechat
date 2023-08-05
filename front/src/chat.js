@@ -10,7 +10,7 @@ let DATA = {
     messages: [],
 };
 
-const REACT_APP_WS_DOMAIN = process.env.REACT_APP_WS_DOMAIN || 'wss://ws.onetimechat.online';
+const REACT_APP_WS_DOMAIN = process.env.REACT_APP_WS_DOMAIN || 'wss://ws.chat.doroshev.com';
 
 const CMD_INIT = 'init';
 const CMD_ADD = 'add';
