@@ -1,6 +1,6 @@
 # One Time Chat
 
-Source code for https://onetimechat.online, a storageless chat, which stores messages only inside your browser.
+Source code for https://chat.doroshev.com, a storageless chat, which stores messages only inside your browser.
 
 ## Message structure:
 
