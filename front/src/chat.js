@@ -60,6 +60,7 @@ const InputMessage = ({onSend}) => {
                 className="input-message__text"
                 onKeyPress={onKeyPress}
                 ref={messageRef}
+                autoFocus
             />
             <button
                 className="input-message__button"
