@@ -8,7 +8,7 @@ jobs:
     permissions: write-all
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: "Backend: Build and publish Docker image"
       uses: elgohr/Publish-Docker-Github-Action@v5
       with:
@@ -23,7 +23,7 @@ jobs:
     permissions: write-all
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: "Frontend: Build and publish Docker image"
       uses: elgohr/Publish-Docker-Github-Action@v5
       with:
