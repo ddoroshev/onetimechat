@@ -2,13 +2,13 @@
 
 [[package]]
 name = "aiojobs"
-version = "1.2.1"
+version = "1.3.0"
 description = "Job scheduler for managing background tasks (asyncio)"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "aiojobs-1.2.1-py3-none-any.whl", hash = "sha256:88efd8e56295eff69efcc44488e41c38159bcbda2ac7c6884e4140674dace54f"},
-    {file = "aiojobs-1.2.1.tar.gz", hash = "sha256:59d6e7ad7829e9d0f73bfceeae28153b541be6b0959a08cc5ceb222717c888ff"},
+    {file = "aiojobs-1.3.0-py3-none-any.whl", hash = "sha256:1f9f36179b6d50796c4fc9e8851fdae10f38d6c2f64412a91e2c4eff73054ce0"},
+    {file = "aiojobs-1.3.0.tar.gz", hash = "sha256:03074c884b3dc388b8d798c0de24ec17d72b2799018497fda8062c0431a494b5"},
 ]
 
 [package.extras]
