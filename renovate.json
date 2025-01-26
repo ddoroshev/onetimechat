@@ -1,21 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:recommended",
     ":enablePreCommit"
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "*"
-      ],
       "matchUpdateTypes": [
         "minor",
         "patch"
       ],
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
-      "automerge": true
+      "automerge": true,
+      "matchPackageNames": [
+        "*"
+      ]
     }
   ]
 }
