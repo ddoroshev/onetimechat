@@ -1,4 +1,4 @@
-FROM ghcr.io/ddoroshev/pybase:3.13.5-compile-v1 as compile
+FROM ghcr.io/ddoroshev/pybase:3.13.6-compile-v1 as compile
 
 COPY poetry.lock pyproject.toml /app/
 
@@ -7,7 +7,7 @@ RUN poetry install --no-root --only main
 COPY . /app/
 
 
-FROM ghcr.io/ddoroshev/pybase:3.13.5-runtime-v1 as runtime
+FROM ghcr.io/ddoroshev/pybase:3.13.6-runtime-v1 as runtime
 
 WORKDIR /app
 
