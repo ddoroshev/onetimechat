@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import * as ReactDOM from 'react-dom';
 import Color from 'color';
 
 import './chat.css';
@@ -72,34 +71,32 @@ const InputMessage = ({onSend}) => {
 };
 
 class Messages extends Component {
-    componentDidUpdate() {
-        if (this.scrollAtBottom) {
+    messagesRef = React.createRef();
+
+    getSnapshotBeforeUpdate(prevProps) {
+        if (prevProps.lastMessageId === this.props.lastMessageId) {
+            return null;
+        }
+        const messages = this.messagesRef.current;
+        const scrollBottom = messages.scrollHeight - messages.clientHeight;
+        return {atBottom: scrollBottom <= 0 || messages.scrollTop === scrollBottom};
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (snapshot && snapshot.atBottom) {
             this.scrollToBottom();
         }
     }
 
-    componentWillUpdate(nextProps) {
-        const historyChanged = nextProps.lastMessageId !== this.props.lastMessageId;
-        if (historyChanged) {
-            const {messages} = this.refs;
-            const scrollPos = messages.scrollTop;
-            const scrollBottom = messages.scrollHeight - messages.clientHeight;
-            this.scrollAtBottom = scrollBottom <= 0 || scrollPos === scrollBottom;
-        }
-    }
-
     scrollToBottom() {
-        const {messages} = this.refs;
-        const scrollHeight = messages.scrollHeight;
-        const height = messages.clientHeight;
-        const maxScrollTop = scrollHeight - height;
-
-        ReactDOM.findDOMNode(messages).scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+        const messages = this.messagesRef.current;
+        const maxScrollTop = messages.scrollHeight - messages.clientHeight;
+        messages.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
 
     render() {
         return (
-            <div className="messages" ref='messages'>
+            <div className="messages" ref={this.messagesRef}>
                 {this.props.messages.map((message, i) => <Message key={i} message={message}/>)}
             </div>
         );
