@@ -34,7 +34,22 @@ One Time Chat operates on a command-based messaging system, where commands are s
 
 To participate in a One Time Chat, simply visit the [website](https://onetimechat.fly.dev) and start chatting! Remember, messages are ephemeral and will disappear once you close the browser.
 
-For developers interested in the source code, feel free to explore this repository. To run this project locally, you need to have Node.js (for the front-end) and Python 3.11+ (for the back-end) installed.
+For developers interested in the source code, feel free to explore this repository.
+
+### Running locally
+
+**Backend** (Python 3.11+, uses [Poetry](https://python-poetry.org/)):
+```bash
+poetry install
+poetry run python src/main.py
+```
+Listens on `ws://localhost:8080`.
+
+**Frontend** (no build step — plain static files):
+```bash
+cd front/public && python -m http.server 3000
+```
+Open http://localhost:3000. The WS endpoint auto-detects localhost, so no configuration needed.
 
 ## License:
 
