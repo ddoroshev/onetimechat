@@ -117,7 +117,11 @@ async def chat(websocket, path):
         await queue.put(CMD_RM, client_id)
 
 
-async def server(stop, host='0.0.0.0', port=8080):
+async def server(host='0.0.0.0', port=8080):
+    loop = asyncio.get_running_loop()
+    stop = loop.create_future()
+    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+
     scheduler = await aiojobs.create_scheduler()
     await scheduler.spawn(worker())
 
@@ -129,13 +133,4 @@ async def server(stop, host='0.0.0.0', port=8080):
     await scheduler.close()
 
 
-loop = asyncio.get_event_loop()
-
-if DEBUG:
-    import aiohttp_autoreload
-
-    aiohttp_autoreload.start(loop, 1)
-
-stop = asyncio.Future()
-loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
-loop.run_until_complete(server(stop))
+asyncio.run(server())
