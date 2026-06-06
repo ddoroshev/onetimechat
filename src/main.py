@@ -94,7 +94,7 @@ def load_message(message):
     return cmd, params
 
 
-async def chat(websocket, path):
+async def chat(websocket):
     client_id = uuid.uuid4().hex
     name = names.get_full_name()
 
